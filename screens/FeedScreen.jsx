@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Card from "../components/Card";
 
 export default function FeedScreen() {
+  //#region style
   const HeaderTextContainer = styled.View`
     margin-left: 20px;
   `;
@@ -21,6 +22,7 @@ export default function FeedScreen() {
     width: 100%;
     height: 100%;
   `;
+  //#endregion
   const navigation = useNavigation();
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -40,6 +42,9 @@ export default function FeedScreen() {
   return (
     <Container>
       <ScrollContainer>
+        <Card />
+        <Card />
+        <Card />
         <Card />
       </ScrollContainer>
     </Container>

@@ -19,23 +19,23 @@ export default function HomeScreen() {
             case "FeedScreen":
               iconName = focused ? "home" : "home-outline";
               color = focused && "black";
-              size = 30;
+              size = 20;
               break;
             case "SearchScreen":
               iconName = focused ? "search" : "search-outline";
               color = focused && "black";
-              size = 30;
+              size = 20;
               break;
             case "ProfileScreen":
               iconName = focused ? "person-sharp" : "person-outline";
               color = focused && "black";
-              size = 30;
+              size = 20;
           }
 
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarShowLabel: false,
+        tabBarActiveTintColor: "black",
       })}
     >
       <Tab.Screen name="FeedScreen" component={FeedScreen} />

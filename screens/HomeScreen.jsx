@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react";
+import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FeedScreen from "./FeedScreen";
 import SearchScreen from "./SearchScreen";
@@ -31,14 +31,16 @@ export default function HomeScreen() {
               color = focused && "black";
               size = 20;
           }
-
-          // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: "black",
+        tabBarShowLabel: false,
       })}
     >
-      <Tab.Screen name="FeedScreen" component={FeedScreen} />
+      <Tab.Screen
+        name="FeedScreen"
+        options={{ headerTitle: "Feed" }}
+        component={FeedScreen}
+      />
       <Tab.Screen name="SearchScreen" component={SearchScreen} />
       <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
     </Tab.Navigator>

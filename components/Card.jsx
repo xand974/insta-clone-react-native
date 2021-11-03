@@ -22,7 +22,7 @@ export default function Card() {
   const AuthorImage = styled.Image`
     width: 40px;
     height: 40px;
-    border-radius: 100;
+    border-radius: 100px;
     margin-right: 10px;
   `;
 
@@ -77,7 +77,7 @@ export default function Card() {
     margin-top: 5px;
   `;
   const CardComments = styled.View`
-    height: 50%;
+    height: 35%;
     margin: 5px 0;
   `;
   const CommentButton = styled.TouchableOpacity``;
@@ -103,7 +103,7 @@ export default function Card() {
   const CardFooter = styled.View`
     width: 95%;
     margin: 5px auto 10px auto;
-    height: 5%;
+    height: 3%;
   `;
 
   const TimeAgoText = styled.Text`
@@ -176,6 +176,12 @@ export default function Card() {
                 <CommentAuthorText>maley</CommentAuthorText>
               </AuthorButton>
               <CommentText>comment tas fait ca ???</CommentText>
+            </Comment>
+            <Comment>
+              <AuthorButton>
+                <CommentAuthorText>momo</CommentAuthorText>
+              </AuthorButton>
+              <CommentText>trop fort</CommentText>
             </Comment>
           </CardComments>
         </CardContent>

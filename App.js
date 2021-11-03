@@ -8,7 +8,7 @@ import HomeScreen from "./screens/HomeScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   return (
     <NavigationContainer>
@@ -23,8 +23,16 @@ export default function App() {
           </Stack.Group>
         ) : (
           <Stack.Group>
-            <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen
+              name="RegisterScreen"
+              options={{ headerShown: false }}
+              component={RegisterScreen}
+            />
+            <Stack.Screen
+              name="LoginScreen"
+              options={{ headerShown: false }}
+              component={LoginScreen}
+            />
           </Stack.Group>
         )}
       </Stack.Navigator>

@@ -3,9 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 export const postSlice = createSlice({
   name: "posts",
   initialState: {
-    userPosts: [],
+    posts: [],
     pending: false,
     error: false,
+    currentUserPosts: [],
   },
   reducers: {
     getPostsStart: (state) => {
@@ -13,7 +14,7 @@ export const postSlice = createSlice({
     },
     getPostsSuccess: (state, action) => {
       state.pending = false;
-      state.userPosts = action.payload;
+      state.posts = action.payload;
     },
     getPostsFailure: (state) => {
       state.pending = false;
@@ -24,9 +25,20 @@ export const postSlice = createSlice({
     },
     createPostsSuccess: (state, action) => {
       state.pending = false;
-      state.userPosts.push(action.payload);
+      state.posts.push(action.payload);
     },
     createPostsFailure: (state) => {
+      state.pending = false;
+      state.error = true;
+    },
+    getCurrentUserPostStart: (state) => {
+      state.pending = true;
+    },
+    getCurrentUserPostSuccess: (state, action) => {
+      state.pending = false;
+      state.currentUserPosts = action.payload;
+    },
+    getCurrentUserPostFailure: (state) => {
       state.pending = false;
       state.error = true;
     },
@@ -41,4 +53,7 @@ export const {
   createPostsFailure,
   createPostsStart,
   createPostsSuccess,
+  getCurrentUserPostFailure,
+  getCurrentUserPostStart,
+  getCurrentUserPostSuccess,
 } = postSlice.actions;

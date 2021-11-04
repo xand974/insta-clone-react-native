@@ -9,14 +9,19 @@ import {
   doc,
   getDoc,
   getDocs,
+  query,
   serverTimestamp,
   setDoc,
+  where,
 } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import {
   createPostsFailure,
   createPostsStart,
   createPostsSuccess,
+  getCurrentUserPostFailure,
+  getCurrentUserPostStart,
+  getCurrentUserPostSuccess,
   getPostsFailure,
   getPostsStart,
   getPostsSuccess,
@@ -90,5 +95,20 @@ export const getPosts = async (dispatch) => {
     dispatch(getPostsSuccess(posts));
   } catch (err) {
     dispatch(getPostsFailure());
+  }
+};
+
+export const getCurrentUserPost = async (dispatch) => {
+  dispatch(getCurrentUserPostStart());
+  try {
+    const colRef = collection(db, "posts");
+    const q = query(colRef, where("userId", "==", auth.currentUser.uid));
+    const res = await getDocs(q);
+    const posts = res.docs.map((doc) => {
+      return { id: doc.id, data: doc.data() };
+    });
+    dispatch(getCurrentUserPostSuccess(posts));
+  } catch (err) {
+    dispatch(getCurrentUserPostFailure());
   }
 };

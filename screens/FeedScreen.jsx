@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useLayoutEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React from "react";
+import { StyleSheet } from "react-native";
 import styled from "styled-components";
 import Card from "../components/Card";
 import { useSelector } from "react-redux";
@@ -22,10 +22,9 @@ const ScrollContainer = styled.ScrollView`
 
 export default function FeedScreen() {
   const navigation = useNavigation();
-  const { userPosts } = useSelector((state) => state.posts);
+  const { posts } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
 
-  console.log(userPosts);
   useEffect(() => {
     const unsubscribed = getPosts(dispatch);
 
@@ -35,12 +34,10 @@ export default function FeedScreen() {
   return (
     <Container>
       <ScrollContainer>
-        {userPosts.map((post) => (
+        {posts.map((post) => (
           <Card item={post.data} key={post.id} />
         ))}
       </ScrollContainer>
     </Container>
   );
 }
-
-const styles = StyleSheet.create({});

@@ -4,9 +4,19 @@ import { useLayoutEffect } from "react";
 import styled from "styled-components";
 import { auth } from "../firebase";
 import { userPosts } from "../mockData";
-
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getCurrentUserPost } from "../redux/firebaseCalls";
+import { useDispatch } from "react-redux";
 export default function ProfileScreen() {
+  const { currentUserPosts } = useSelector((state) => state.posts);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    getCurrentUserPost(dispatch);
+  }, []);
   const navigation = useNavigation();
+
+  //#region  style
   const Container = styled.View`
     height: 100%;
     width: 100%;
@@ -80,6 +90,7 @@ export default function ProfileScreen() {
     height: 100%;
   `;
   //#endregion
+  //#endregion
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -121,9 +132,9 @@ export default function ProfileScreen() {
         <ListItemContainer
           contentContainerStyle={{ flexDirection: "row", flexWrap: "wrap" }}
         >
-          {userPosts.map((post) => (
+          {currentUserPosts.map((post) => (
             <ListItemButton key={post.id} activeOpacity={0.9}>
-              <ListItemImage source={{ uri: post.img }} />
+              <ListItemImage source={{ uri: post.data.image }} />
             </ListItemButton>
           ))}
         </ListItemContainer>

@@ -7,4 +7,6 @@ export default configureStore({
     posts: postSlice,
     users: userSlice,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }),
 });

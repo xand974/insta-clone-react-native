@@ -9,19 +9,30 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
+import Loading from "./components/Loading";
+import AddPostScreen from "./screens/AddPostScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
   const [loggedIn, setLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const unsubscribed = onAuthStateChanged(auth, (user) => {
       if (user) {
         setLoggedIn(true);
+        setLoading(true);
+      } else {
+        setLoggedIn(false);
+        setLoading(true);
       }
     });
     return unsubscribed;
   }, []);
+
+  if (!loading) {
+    return <Loading />;
+  }
 
   return (
     <Provider store={store}>

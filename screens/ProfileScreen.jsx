@@ -14,9 +14,8 @@ export default function ProfileScreen() {
   `;
   const HeaderName = styled.Text`
     margin-left: 20px;
-    font-size: 30px;
+    font-size: 23px;
     font-weight: bold;
-    letter-spacing: 1px;
   `;
   const MainContainer = styled.ScrollView`
     width: 100%;

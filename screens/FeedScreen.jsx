@@ -1,59 +1,43 @@
-import React, { useLayoutEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import React, { useLayoutEffect } from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import styled from "styled-components";
 import Card from "../components/Card";
-import { TouchableOpacity } from "react-native";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getPosts } from "../redux/firebaseCalls";
+import { useDispatch } from "react-redux";
+//#region style
+const Container = styled.View`
+  height: 100%;
+  background-color: white;
+  padding-top: 10px;
+`;
+const ScrollContainer = styled.ScrollView`
+  width: 100%;
+  height: 100%;
+`;
+
+//#endregion
 
 export default function FeedScreen() {
-  //#region style
-  const HeaderTextContainer = styled.View`
-    margin-left: 20px;
-  `;
-  const HeaderImg = styled.Image`
-    width: 110px;
-    height: 30px;
-  `;
-  const Container = styled.View`
-    height: 100%;
-    background-color: white;
-    padding-top: 10px;
-  `;
-  const ScrollContainer = styled.ScrollView`
-    width: 100%;
-    height: 100%;
-  `;
-  //#endregion
   const navigation = useNavigation();
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      title: null,
-      headerLeft: () => (
-        <HeaderTextContainer>
-          <HeaderImg
-            source={{
-              uri: "https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png",
-            }}
-          />
-        </HeaderTextContainer>
-      ),
-      headerRight: () => (
-        <TouchableOpacity onPress={async () => await signOut(auth)}>
-          <Text>Logout</Text>
-        </TouchableOpacity>
-      ),
-      headerShadowVisible: false,
-    });
+  const { userPosts } = useSelector((state) => state.posts);
+  const dispatch = useDispatch();
+
+  console.log(userPosts);
+  useEffect(() => {
+    const unsubscribed = getPosts(dispatch);
+
+    return unsubscribed;
   }, []);
+
   return (
     <Container>
       <ScrollContainer>
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        {userPosts.map((post) => (
+          <Card item={post.data} key={post.id} />
+        ))}
       </ScrollContainer>
     </Container>
   );

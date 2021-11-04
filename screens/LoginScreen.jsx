@@ -106,6 +106,7 @@ export default function LoginScreen() {
           <Input placeholder="email" onChangeText={(text) => setEmail(text)} />
           <Input
             placeholder="password"
+            secureTextEntry={true}
             onChangeText={(text) => setPassword(text)}
           />
           <CustomButton

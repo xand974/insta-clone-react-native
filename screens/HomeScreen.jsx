@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import FeedScreen from "./FeedScreen";
+import MainScreen from "./MainScreen";
 import SearchScreen from "./SearchScreen";
 import ProfileScreen from "./ProfileScreen";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -16,7 +16,7 @@ export default function HomeScreen() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           switch (route.name) {
-            case "FeedScreen":
+            case "MainScreen":
               iconName = focused ? "home" : "home-outline";
               color = focused && "black";
               size = 20;
@@ -36,7 +36,7 @@ export default function HomeScreen() {
         tabBarShowLabel: false,
       })}
     >
-      <Tab.Screen name="FeedScreen" component={FeedScreen} />
+      <Tab.Screen name="MainScreen" component={MainScreen} />
       <Tab.Screen name="SearchScreen" component={SearchScreen} />
       <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
     </Tab.Navigator>

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import EntIcon from "react-native-vector-icons/Entypo";
 import FontIcon from "react-native-vector-icons/FontAwesome";
 import { Divider } from "react-native-elements/dist/divider/Divider";
-export default function Card() {
+export default function Card({ item }) {
   const CardContainer = styled.View`
     width: 100%;
     height: 650px;
@@ -126,7 +126,7 @@ export default function Card() {
       <CardBody>
         <Img
           source={{
-            uri: "https://images.unsplash.com/photo-1454942901704-3c44c11b2ad1?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80",
+            uri: item.image,
           }}
         />
         <CardFeatures>
@@ -149,12 +149,9 @@ export default function Card() {
             <LikeText>et 360 autres personnes</LikeText>
           </LikeContainer>
           <AuthorButton>
-            <AuthorTextBig>xand974</AuthorTextBig>
+            <AuthorTextBig>{item.userId}</AuthorTextBig>
           </AuthorButton>
-          <DescriptionText>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam,
-            saepe!
-          </DescriptionText>
+          <DescriptionText>{item.content}</DescriptionText>
           <CardComments>
             <CommentButton>
               <CommentRedirectText>Voir les commentaires</CommentRedirectText>
@@ -187,7 +184,7 @@ export default function Card() {
         </CardContent>
       </CardBody>
       <CardFooter>
-        <TimeAgoText>Il y a 2h</TimeAgoText>
+        <TimeAgoText>Il y a {item.timestamp.seconds}</TimeAgoText>
       </CardFooter>
       <Divider orientation="horizontal" />
     </CardContainer>

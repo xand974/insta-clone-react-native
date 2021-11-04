@@ -3,9 +3,24 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 import { auth, db } from "../firebase";
-import { getPostsFailure, getPostsStart, getPostsSuccess } from "./postSlice";
+import {
+  createPostsFailure,
+  createPostsStart,
+  createPostsSuccess,
+  getPostsFailure,
+  getPostsStart,
+  getPostsSuccess,
+} from "./postSlice";
 import { getUsersFailure, getUsersStart, getUsersSuccess } from "./userSlice";
 
 export const login = async (email, password) => {
@@ -43,5 +58,37 @@ export const getUsers = async (dispatch) => {
     dispatch(getUsersSuccess(arrUser));
   } catch (err) {
     dispatch(getUsersFailure());
+  }
+};
+
+export const addPost = async (dispatch, content, image, navigation) => {
+  dispatch(createPostsStart());
+  try {
+    const colRef = collection(db, "posts");
+    const newPost = await addDoc(colRef, {
+      userId: auth.currentUser.uid,
+      content,
+      timestamp: serverTimestamp(),
+      image,
+    });
+    const res = await getDoc(doc(db, "posts", newPost.id));
+    dispatch(createPostsSuccess({ id: res.id, data: res.data() }));
+    navigation.goBack();
+  } catch (err) {
+    dispatch(createPostsFailure());
+  }
+};
+
+export const getPosts = async (dispatch) => {
+  dispatch(getPostsStart());
+  try {
+    const colRef = collection(db, "posts");
+    const res = await getDocs(colRef);
+    const posts = res.docs.map((doc) => {
+      return { id: doc.id, data: doc.data() };
+    });
+    dispatch(getPostsSuccess(posts));
+  } catch (err) {
+    dispatch(getPostsFailure());
   }
 };

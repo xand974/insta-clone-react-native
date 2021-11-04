@@ -1,11 +1,10 @@
 import React from "react";
-import { ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
 import styled from "styled-components";
 import { auth } from "../firebase";
 import { userPosts } from "../mockData";
-import { View, Image } from "react-native";
+
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const Container = styled.View`
@@ -73,7 +72,7 @@ export default function ProfileScreen() {
     height: 100%;
     width: 100%;
   `;
-  const ListItemWrapper = styled.View`
+  const ListItemButton = styled.TouchableOpacity`
     width: 50%;
     height: 200px;
   `;
@@ -122,12 +121,11 @@ export default function ProfileScreen() {
         </HeaderProfile>
         <ListItemContainer
           contentContainerStyle={{ flexDirection: "row", flexWrap: "wrap" }}
-          style={{}}
         >
           {userPosts.map((post) => (
-            <ListItemWrapper key={post.id}>
+            <ListItemButton key={post.id} activeOpacity={0.9}>
               <ListItemImage source={{ uri: post.img }} />
-            </ListItemWrapper>
+            </ListItemButton>
           ))}
         </ListItemContainer>
       </MainContainer>

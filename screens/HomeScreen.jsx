@@ -36,11 +36,7 @@ export default function HomeScreen() {
         tabBarShowLabel: false,
       })}
     >
-      <Tab.Screen
-        name="FeedScreen"
-        options={{ headerTitle: "Feed" }}
-        component={FeedScreen}
-      />
+      <Tab.Screen name="FeedScreen" component={FeedScreen} />
       <Tab.Screen name="SearchScreen" component={SearchScreen} />
       <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
     </Tab.Navigator>

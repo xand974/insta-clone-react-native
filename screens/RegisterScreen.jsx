@@ -1,9 +1,11 @@
-import React from "react";
-import { KeyboardAvoidingView } from "react-native";
+import React, { useState } from "react";
+import { KeyboardAvoidingView, TextInput } from "react-native";
 import { StyleSheet } from "react-native";
 import styled from "styled-components";
 import { useNavigation } from "@react-navigation/native";
+import { register } from "../redux/firebaseCalls";
 
+//#region style
 const Shape = styled.View`
   position: absolute;
   width: 100%;
@@ -39,7 +41,7 @@ const BackgroundImage = styled.Image`
 
 const InputContainer = styled.View`
   width: 70%;
-  height: 300px;
+  height: 370px;
   background: #fff;
   align-items: center;
   justify-content: center;
@@ -48,11 +50,11 @@ const InputContainer = styled.View`
 `;
 const Input = styled.TextInput`
   margin-bottom: 20px;
-  border-bottom-width: 1;
+  border-bottom-width: 1px;
   width: 70%;
   padding-left: 5px;
   padding-bottom: 10px;
-  border-bottom-color: gray;
+  border-bottom-color: lightgray;
 `;
 const CustomButton = styled.TouchableOpacity`
   border-width: 1px;
@@ -74,9 +76,13 @@ const RedirectButtonText = styled.Text`
   font-size: 13px;
   font-weight: 300;
 `;
-
+//#endregion
 export default function RegisterScreen() {
   const navigation = useNavigation();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [img, setImg] = useState("");
 
   return (
     <KeyboardAvoidingView behavior="padding">
@@ -98,9 +104,25 @@ export default function RegisterScreen() {
           >
             <TextShape>Instagram</TextShape>
           </Shape>
-          <Input placeholder="email" />
-          <Input placeholder="password" />
-          <CustomButton title="s'enregistrer">
+          <Input
+            placeholder="username"
+            onChangeText={(text) => setUsername(text)}
+          />
+          <Input placeholder="email" onChangeText={(text) => setEmail(text)} />
+
+          <Input
+            placeholder="password"
+            secureTextEntry={true}
+            onChangeText={(text) => setPassword(text)}
+          />
+          <Input
+            placeholder="photo url (optional)"
+            onChangeText={(text) => setImg(text)}
+          />
+          <CustomButton
+            title="s'enregistrer"
+            onPress={() => register(email, password, username, img)}
+          >
             <CustomButtonText>S'enregistrer</CustomButtonText>
           </CustomButton>
           <RedirectButton onPress={() => navigation.navigate("LoginScreen")}>
@@ -111,5 +133,3 @@ export default function RegisterScreen() {
     </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({});

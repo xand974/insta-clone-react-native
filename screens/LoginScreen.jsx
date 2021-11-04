@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { KeyboardAvoidingView } from "react-native";
 import { StyleSheet } from "react-native";
 import styled from "styled-components";
 import { useNavigation } from "@react-navigation/native";
+import { login } from "../redux/firebaseCalls";
 
+//#region  style
 const Shape = styled.View`
   position: absolute;
   width: 100%;
@@ -48,7 +50,7 @@ const InputContainer = styled.View`
 `;
 const Input = styled.TextInput`
   margin-bottom: 20px;
-  border-bottom-width: 1;
+  border-bottom-width: 1px;
   width: 70%;
   padding-left: 5px;
   padding-bottom: 10px;
@@ -74,9 +76,12 @@ const RedirectButtonText = styled.Text`
   font-size: 13px;
   font-weight: 300;
 `;
+//#endregion
 
 export default function LoginScreen() {
   const navigation = useNavigation();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <KeyboardAvoidingView behavior="padding">
@@ -98,9 +103,15 @@ export default function LoginScreen() {
           >
             <TextShape>Instagram</TextShape>
           </Shape>
-          <Input placeholder="email" />
-          <Input placeholder="password" />
-          <CustomButton title="s'enregistrer">
+          <Input placeholder="email" onChangeText={(text) => setEmail(text)} />
+          <Input
+            placeholder="password"
+            onChangeText={(text) => setPassword(text)}
+          />
+          <CustomButton
+            title="s'enregistrer"
+            onPress={() => login(email, password)}
+          >
             <CustomButtonText>Se Connecter</CustomButtonText>
           </CustomButton>
           <RedirectButton onPress={() => navigation.navigate("RegisterScreen")}>

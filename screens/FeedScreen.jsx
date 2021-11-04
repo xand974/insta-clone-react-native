@@ -3,6 +3,9 @@ import { StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styled from "styled-components";
 import Card from "../components/Card";
+import { TouchableOpacity } from "react-native";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 
 export default function FeedScreen() {
   //#region style
@@ -26,7 +29,7 @@ export default function FeedScreen() {
   const navigation = useNavigation();
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: "",
+      title: null,
       headerLeft: () => (
         <HeaderTextContainer>
           <HeaderImg
@@ -35,6 +38,11 @@ export default function FeedScreen() {
             }}
           />
         </HeaderTextContainer>
+      ),
+      headerRight: () => (
+        <TouchableOpacity onPress={async () => await signOut(auth)}>
+          <Text>Logout</Text>
+        </TouchableOpacity>
       ),
       headerShadowVisible: false,
     });

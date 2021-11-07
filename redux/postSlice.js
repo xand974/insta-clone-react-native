@@ -7,6 +7,8 @@ export const postSlice = createSlice({
     pending: false,
     error: false,
     currentUserPosts: [],
+    creator: null,
+    comments: [],
   },
   reducers: {
     getPostsStart: (state) => {
@@ -42,6 +44,40 @@ export const postSlice = createSlice({
       state.pending = false;
       state.error = true;
     },
+    getCreatorStart: (state) => {
+      state.pending = true;
+    },
+    getCreatorSuccess: (state, action) => {
+      state.pending = false;
+      state.creator = action.payload;
+    },
+    getCreatorFailure: (state) => {
+      state.pending = false;
+      state.error = true;
+    },
+
+    getCommentsStart: (state) => {
+      state.pending = true;
+    },
+    getCommentsSuccess: (state, action) => {
+      state.pending = false;
+      state.comments = action.payload;
+    },
+    getCommentsFailure: (state) => {
+      state.pending = false;
+      state.error = true;
+    },
+    setCommentsStart: (state) => {
+      state.pending = true;
+    },
+    setCommentsSuccess: (state, action) => {
+      state.pending = false;
+      state.comments.push(action.payload);
+    },
+    setCommentsFailure: (state) => {
+      state.pending = false;
+      state.error = true;
+    },
   },
 });
 
@@ -56,4 +92,13 @@ export const {
   getCurrentUserPostFailure,
   getCurrentUserPostStart,
   getCurrentUserPostSuccess,
+  getCreatorFailure,
+  getCreatorStart,
+  getCreatorSuccess,
+  getCommentsFailure,
+  getCommentsStart,
+  getCommentsSuccess,
+  setCommentsFailure,
+  setCommentsStart,
+  setCommentsSuccess,
 } = postSlice.actions;

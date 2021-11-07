@@ -5,6 +5,7 @@ import {
 } from "firebase/auth";
 import {
   addDoc,
+  arrayUnion,
   collection,
   doc,
   getDoc,
@@ -19,12 +20,20 @@ import {
   createPostsFailure,
   createPostsStart,
   createPostsSuccess,
+  getCommentsFailure,
+  getCommentsStart,
+  getCommentsSuccess,
+  getCreatorFailure,
+  getCreatorStart,
+  getCreatorSuccess,
   getCurrentUserPostFailure,
   getCurrentUserPostStart,
   getCurrentUserPostSuccess,
   getPostsFailure,
   getPostsStart,
   getPostsSuccess,
+  setCommentsFailure,
+  setCommentsStart,
 } from "./postSlice";
 import { getUsersFailure, getUsersStart, getUsersSuccess } from "./userSlice";
 
@@ -110,5 +119,32 @@ export const getCurrentUserPost = async (dispatch) => {
     dispatch(getCurrentUserPostSuccess(posts));
   } catch (err) {
     dispatch(getCurrentUserPostFailure());
+  }
+};
+
+export const getCreator = async (dispatch, userId) => {
+  dispatch(getCreatorStart());
+  try {
+    const docRef = doc(db, "users", userId);
+    const res = await getDoc(docRef);
+    dispatch(getCreatorSuccess(res.data()));
+  } catch (error) {
+    dispatch(getCreatorFailure());
+  }
+};
+
+export const commentPost = async (dispatch, comment, postId, userId) => {
+  dispatch(setCommentsStart());
+  try {
+    const docRef = doc(db, "posts", postId);
+    await setDoc(
+      docRef,
+      {
+        comments: arrayUnion({ text: comment, userId }),
+      },
+      { merge: true }
+    );
+  } catch (error) {
+    dispatch(setCommentsFailure());
   }
 };

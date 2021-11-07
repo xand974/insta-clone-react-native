@@ -3,7 +3,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
 import styled from "styled-components";
 import { auth } from "../firebase";
-import { userPosts } from "../mockData";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getCurrentUserPost } from "../redux/firebaseCalls";

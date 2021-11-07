@@ -1,14 +1,37 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Text, TextInput } from "react-native";
 import styled from "styled-components";
 import EntIcon from "react-native-vector-icons/Entypo";
 import FontIcon from "react-native-vector-icons/FontAwesome";
 import { Divider } from "react-native-elements/dist/divider/Divider";
-export default function Card({ item }) {
-  const CardContainer = styled.View`
-    width: 100%;
-    height: 650px;
-  `;
+import { useEffect } from "react";
+import {
+  commentPost,
+  getCommentsPost,
+  getCreator,
+} from "../redux/firebaseCalls";
+import tw from "tailwind-react-native-classnames";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { auth } from "../firebase";
+const CardContainer = styled.View`
+  width: 100%;
+  height: 650px;
+`;
+export default function Card({ item, id }) {
+  const dispatch = useDispatch();
+  const { creator } = useSelector((state) => state.posts);
+  const [comment, setComment] = useState("");
+
+  useEffect(() => {
+    const unsubscribed = getCreator(dispatch, item.userId);
+    return unsubscribed;
+  }, []);
+
+  const handleComment = async () => {
+    comment.length !== 0 &&
+      commentPost(dispatch, comment, id, auth.currentUser.uid);
+  };
 
   //#region Header
 
@@ -37,7 +60,7 @@ export default function Card({ item }) {
   //#region Body
   const CardBody = styled.View`
     width: 100%;
-    height: 85%;
+    height: 80%;
   `;
   const Img = styled.Image`
     width: 100%;
@@ -77,10 +100,12 @@ export default function Card({ item }) {
     margin-top: 5px;
   `;
   const CardComments = styled.View`
-    height: 35%;
+    height: auto;
     margin: 5px 0;
   `;
-  const CommentButton = styled.TouchableOpacity``;
+  const CommentButton = styled.TouchableOpacity`
+    margin-bottom: 5px;
+  `;
   const CommentRedirectText = styled.Text`
     color: gray;
     font-size: 13px;
@@ -116,11 +141,13 @@ export default function Card({ item }) {
       <CardHeader>
         <AuthorImage
           source={{
-            uri: "https://cdn.pixabay.com/photo/2019/11/07/08/12/sea-4608198_640.jpg",
+            uri:
+              creator?.photoURL ||
+              "https://cdn.pixabay.com/photo/2019/11/07/08/12/sea-4608198_640.jpg",
           }}
         />
         <AuthorButton>
-          <AuthorTextBig>xand974</AuthorTextBig>
+          <AuthorTextBig>{creator?.username}</AuthorTextBig>
         </AuthorButton>
       </CardHeader>
       <CardBody>
@@ -149,38 +176,43 @@ export default function Card({ item }) {
             <LikeText>et 360 autres personnes</LikeText>
           </LikeContainer>
           <AuthorButton>
-            <AuthorTextBig>{item.userId}</AuthorTextBig>
+            <AuthorTextBig>{creator?.username}</AuthorTextBig>
           </AuthorButton>
           <DescriptionText>{item.content}</DescriptionText>
           <CardComments>
             <CommentButton>
               <CommentRedirectText>Voir les commentaires</CommentRedirectText>
             </CommentButton>
-            <Comment>
-              <AuthorButton>
-                <CommentAuthorText>blablabla</CommentAuthorText>
-              </AuthorButton>
-              <CommentText>hahah j'adore</CommentText>
-            </Comment>
-            <Comment>
-              <AuthorButton>
-                <CommentAuthorText>pommeDePAin</CommentAuthorText>
-              </AuthorButton>
-              <CommentText>nice nice</CommentText>
-            </Comment>
-            <Comment>
-              <AuthorButton>
-                <CommentAuthorText>maley</CommentAuthorText>
-              </AuthorButton>
-              <CommentText>comment tas fait ca ???</CommentText>
-            </Comment>
-            <Comment>
-              <AuthorButton>
-                <CommentAuthorText>momo</CommentAuthorText>
-              </AuthorButton>
-              <CommentText>trop fort</CommentText>
-            </Comment>
+            {item.comments?.length === 0 || item.comments === undefined ? (
+              <Text style={tw`text-red-200`}>Pas encore de commentaires</Text>
+            ) : (
+              <>
+                {item.comments?.map((comment, id) => (
+                  <Comment key={id}>
+                    <AuthorButton>
+                      <CommentAuthorText>{comment?.userId}</CommentAuthorText>
+                    </AuthorButton>
+                    <CommentText>{comment?.text}</CommentText>
+                  </Comment>
+                ))}
+              </>
+            )}
           </CardComments>
+          <View style={tw`flex-row items-center mb-5`}>
+            <TextInput
+              onSubmitEditing={handleComment}
+              defaultValue={comment}
+              onChangeText={(text) => setComment(text)}
+              placeholder="entrez un commentaire"
+              style={tw` flex-1`}
+            />
+            <TouchableOpacity
+              style={tw`bg-black`}
+              onPress={() => handleComment()}
+            >
+              <Text style={tw`text-white`}>Commenter</Text>
+            </TouchableOpacity>
+          </View>
         </CardContent>
       </CardBody>
       <CardFooter>
@@ -190,5 +222,3 @@ export default function Card({ item }) {
     </CardContainer>
   );
 }
-
-const styles = StyleSheet.create({});

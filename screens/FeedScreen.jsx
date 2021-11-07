@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { KeyboardAvoidingView } from "react-native";
 import styled from "styled-components";
 import Card from "../components/Card";
 import { useSelector } from "react-redux";
@@ -33,11 +33,13 @@ export default function FeedScreen() {
 
   return (
     <Container>
-      <ScrollContainer>
-        {posts.map((post) => (
-          <Card item={post.data} key={post.id} />
-        ))}
-      </ScrollContainer>
+      <KeyboardAvoidingView behavior="padding">
+        <ScrollContainer>
+          {posts.map((post) => (
+            <Card item={post.data} id={post.id} key={post.id} />
+          ))}
+        </ScrollContainer>
+      </KeyboardAvoidingView>
     </Container>
   );
 }
